@@ -39,6 +39,7 @@ const LoginForm = () => {
                 <input style={{width:'423px'}} type="text" placeholder="Birthday: MM/DD/YYYY" onFocus={e => (e.target.type = "date")} onBlur={e => (e.target.type = "text")}></input>
                 <br></br>
                 <button id="SignUp">Sign Up</button>
+                <button id="loginBtnBack" onClick={() => {setloginUpDisplay("block"); setsignUpDisplay("none")}}>Back to Login</button>
             </div>
         </>
     )

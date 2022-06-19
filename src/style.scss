@@ -117,7 +117,7 @@
 
 #SignUp{
     height:50px;
-    width:200px;
+    width:211px;
     margin: 5px;
     background-color:#36a420;
     color:white;
@@ -129,4 +129,20 @@
 #SignUp:hover {
     cursor: pointer;
     background-color:#2e901b;
+}
+
+#loginBtnBack{
+    height:50px;
+    width:211px;
+    margin: 5px;
+    background-color:#1877f2;
+    color:white;
+    font-weight: bold;
+    transition:0.1s ease-in-out;
+    border-radius:5px;
+}
+
+#loginBtnBack:hover{
+    cursor: pointer;
+    background-color:#196bd7;
 }
