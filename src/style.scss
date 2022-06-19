@@ -28,6 +28,7 @@
 }
 
 #loginForm{
+    display: none;
     height:fit-content;
     width:fit-content;
     position: relative;
@@ -58,7 +59,7 @@
     background-color:#1877f2;
     color:white;
     font-weight: bold;
-    transition:0.5s ease-in-out;
+    transition:0.1s ease-in-out;
     border-radius:5px;
 }
 
@@ -79,12 +80,53 @@
     background-color:#36a420;
     color:white;
     font-weight: bold;
-    transition:0.5s ease-in-out;
+    transition:0.1s ease-in-out;
     border-radius:5px;
 }
 
-
 #createAcc:hover{
+    cursor: pointer;
+    background-color:#2e901b;
+}
+
+#signupform{
+    height:fit-content;
+    width:fit-content;
+    position: relative;
+    text-align:left;
+    top:22vh;
+    font-family: Helvetica;
+    background:linear-gradient(rgba(240,242,245,0.9),rgba(240,242,245,0.9));
+    transform: translateX(-50%);
+    left: 50%;
+    padding:30px;
+    border-radius:10px;
+    transition: 1s ease-in-out;
+}
+
+#signupform input{
+    text-align: left;
+    width:200px;
+    margin: 5px;
+    height:50px;
+    padding:5px;
+    transition:0.5s ease-in-out;
+    border:1px solid grey;
+    border-radius:5px;
+}
+
+#SignUp{
+    height:50px;
+    width:200px;
+    margin: 5px;
+    background-color:#36a420;
+    color:white;
+    font-weight: bold;
+    transition:0.1s ease-in-out;
+    border-radius:5px;
+}
+
+#SignUp:hover {
     cursor: pointer;
     background-color:#2e901b;
 }
