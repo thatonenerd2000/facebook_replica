@@ -3,6 +3,8 @@ import React from 'react'
 import '../style.scss'
 import fbLogo from "../media/fbLogo.png"
 import fbWrittenLogo from "../media/facebookWrittenLogo.png"
+import Fade from 'react-reveal/Fade';
+
 
 const LoginForm = () => {
     return(
@@ -29,7 +31,9 @@ const LoginHolder = () => {
     return(
         <>
             <img id="fbLogo" src={fbLogo}></img>
-            <LoginForm/>
+            <Fade>
+                <LoginForm/>
+            </Fade>
         </>
     )
 }
