@@ -81,11 +81,11 @@ const LoginForm = () => {
                 <input type="text" id="fName" placeholder='First Name'></input>
                 <input type="text" id="lName" placeholder='Last Name'></input>
                 <br></br>
-                <input id="emailSignUp" style={{width:'423px'}} type="text" placeholder='Email address'></input>
+                <input id="emailSignUp" style={{width:'31.3vw'}} type="text" placeholder='Email address'></input>
                 <br></br>
-                <input id="passwordSignUp" style={{width:'423px'}} type="password" placeholder='Password'></input>
+                <input id="passwordSignUp" style={{width:'31.3vw'}} type="password" placeholder='Password'></input>
                 <br></br>
-                <input id="dob" style={{width:'423px'}} type="text" placeholder="Birthday: MM/DD/YYYY" onFocus={e => (e.target.type = "date")} onBlur={e => (e.target.type = "text")}></input>
+                <input id="dob" style={{width:'31.3vw'}} type="text" placeholder="Birthday: MM/DD/YYYY" onFocus={e => (e.target.type = "date")} onBlur={e => (e.target.type = "text")}></input>
                 <br></br>
                 <button id="SignUp" onClick={()=>{
                     const fName = document.getElementById("fName").value
