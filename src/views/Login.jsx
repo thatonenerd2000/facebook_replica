@@ -6,6 +6,9 @@ import fbWrittenLogo from "../media/facebookWrittenLogo.png"
 import Fade from 'react-reveal/Fade';
 import GlobalContext, {ConfigContext} from '../GlobalContext';
 import {signInWithEmailAndPassword,createUserWithEmailAndPassword,getAuth} from "firebase/auth"
+import { getDatabase, ref, set } from "firebase/database";
+import Toastify from 'toastify-js'
+import "toastify-js/src/toastify.css"
 
 const LoginForm = () => {
     //Local state variables
@@ -17,6 +20,8 @@ const LoginForm = () => {
     //Firebase Config
     const firebaseApp = Globalconfig.firebase
     const auth = getAuth(firebaseApp)
+    const db = getDatabase ()
+
     auth.signOut()
     return(
         <>
@@ -34,16 +39,37 @@ const LoginForm = () => {
                     signInWithEmailAndPassword(auth,email,password).catch(error => {
                         console.log(error)
                         Globalconfig.setAuthStatus(false)
+                        Toastify({
+                            text: "Something went wrong, Please check your credentials",
+                            duration: 5000,
+                            close: true,
+                            gravity: "top", // `top` or `bottom`
+                            position: "center", // `left`, `center` or `right`
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                              background: "linear-gradient(to right, #880808, #EE4B2B)",
+                            },
+                        }).showToast();
                     })
                     auth.onAuthStateChanged(user => {
                         if(user){
                             Globalconfig.setAuthStatus(true)
+                            Toastify({
+                                text: "Log in Success!",
+                                duration: 5000,
+                                close: true,
+                                gravity: "top", // `top` or `bottom`
+                                position: "center", // `left`, `center` or `right`
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                style: {
+                                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                },
+                            }).showToast();
                         }
                     })
                 }}>Log In</button>
                 <br></br>
                 <a href="#">Forgotten password?</a>
-                <p>Hello: {Globalconfig.authStatus.toString()}</p>
                 <hr></hr>
                 <br></br>
                 <button id="createAcc" onClick={() => {setloginUpDisplay("none"); setsignUpDisplay("block")}}>Create New Account</button>
@@ -52,16 +78,45 @@ const LoginForm = () => {
             <div style={{display:signUpDisplay}} id="signupform">
                 <img id="fbWrittenLogo" src={fbWrittenLogo}></img>
                 <br></br>
-                <input type="text" placeholder='First Name'></input>
-                <input type="text" placeholder='Last Name'></input>
+                <input type="text" id="fName" placeholder='First Name'></input>
+                <input type="text" id="lName" placeholder='Last Name'></input>
                 <br></br>
-                <input style={{width:'423px'}} type="text" placeholder='Email address'></input>
+                <input id="emailSignUp" style={{width:'423px'}} type="text" placeholder='Email address'></input>
                 <br></br>
-                <input style={{width:'423px'}} type="password" placeholder='Password'></input>
+                <input id="passwordSignUp" style={{width:'423px'}} type="password" placeholder='Password'></input>
                 <br></br>
-                <input style={{width:'423px'}} type="text" placeholder="Birthday: MM/DD/YYYY" onFocus={e => (e.target.type = "date")} onBlur={e => (e.target.type = "text")}></input>
+                <input id="dob" style={{width:'423px'}} type="text" placeholder="Birthday: MM/DD/YYYY" onFocus={e => (e.target.type = "date")} onBlur={e => (e.target.type = "text")}></input>
                 <br></br>
-                <button id="SignUp">Sign Up</button>
+                <button id="SignUp" onClick={()=>{
+                    const fName = document.getElementById("fName").value
+                    const lName = document.getElementById("lName").value
+                    const email = document.getElementById("emailSignUp").value
+                    const password = document.getElementById("passwordSignUp").value
+                    const dob = document.getElementById("dob").value
+                    // Firebase Sign Up
+                    createUserWithEmailAndPassword(auth,email,password).then(userInfo => {
+                        let user = {
+                            UID: userInfo.user.uid,
+                            first_name: fName,
+                            last_name: lName,
+                            email: email,
+                            DOB: dob,
+                            profile_picture: ""
+                        }
+                        set(ref(db,'users/' + email.substring(0,email.lastIndexOf('@'))+dob),user)
+                        Toastify({
+                            text: "Sign up Success!",
+                            duration: 5000,
+                            close: true,
+                            gravity: "top", // `top` or `bottom`
+                            position: "center", // `left`, `center` or `right`
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                              background: "linear-gradient(to right, #1877f2, ##95bcf0)",
+                            },
+                        }).showToast();
+                    })
+                }}>Sign Up</button>
                 <button id="loginBtnBack" onClick={() => {setloginUpDisplay("block"); setsignUpDisplay("none")}}>Back to Login</button>
             </div>
         </>
