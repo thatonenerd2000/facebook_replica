@@ -1,16 +1,18 @@
 // Login Page
 #Login{
-    height:100vh;
+    min-height: 100vh;
+    height: 100%;
     width:100vw;
     background-image: url("./media/loginBg.svg");
     text-align: center;
-    background-size: cover;
-}
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;}
 
 #fbLogo{
     height:20vh;
     position:relative;
-    top:20vh;
+    top:10vh;
     animation: logoAnimation 8s ease-in-out 0s infinite alternate-reverse forwards;
 }
 
@@ -32,13 +34,14 @@
     height:fit-content;
     width:fit-content;
     position: relative;
-    top:22vh;
+    top:12vh;
     font-family: Helvetica;
     background:linear-gradient(rgba(240,242,245,0.9),rgba(240,242,245,0.9));
     transform: translateX(-50%);
     left: 50%;
     padding:30px;
     border-radius:10px;
+    transition: 0.5s ease-in-out;
 }
 
 #loginForm input{
@@ -94,7 +97,7 @@
     width:fit-content;
     position: relative;
     text-align:left;
-    top:22vh;
+    top:12vh;
     font-family: Helvetica;
     background:linear-gradient(rgba(240,242,245,0.9),rgba(240,242,245,0.9));
     transform: translateX(-50%);
@@ -145,4 +148,18 @@
 #loginBtnBack:hover{
     cursor: pointer;
     background-color:#196bd7;
+}
+
+#proPic{
+    height:20vh;
+    width: 20vh;
+    background-position: center center;
+    object-fit: cover;
+    box-shadow:
+    2.8px 2.8px 5px rgba(0, 0, 0, 0.028),
+    6.7px 6.7px 9.9px rgba(0, 0, 0, 0.04),
+    12.5px 12.5px 15.3px rgba(0, 0, 0, 0.048),
+    22.3px 22.3px 22.5px rgba(0, 0, 0, 0.054),
+    41.8px 41.8px 36.6px rgba(0, 0, 0, 0.059),
+    100px 100px 80px rgba(0, 0, 0, 0.07);
 }
