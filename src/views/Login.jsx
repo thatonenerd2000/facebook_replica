@@ -3,18 +3,26 @@ import React, { useContext, useEffect, useState } from 'react'
 import '../style.scss'
 import fbLogo from "../media/fbLogo.png"
 import fbWrittenLogo from "../media/facebookWrittenLogo.png"
+import ppic from "../media/ppic.png"
+
 import Fade from 'react-reveal/Fade';
 import GlobalContext, {ConfigContext} from '../GlobalContext';
 import {signInWithEmailAndPassword,createUserWithEmailAndPassword,getAuth} from "firebase/auth"
 import { getDatabase, ref, set } from "firebase/database";
+import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
+import {ref as sRef} from "firebase/storage"
+
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 
 const LoginForm = () => {
     //Local state variables
+    // CSS
     const [loginDisplay, setloginUpDisplay] = useState("block")
     const [signUpDisplay, setsignUpDisplay] = useState("none")
-
+    const [proPicRadius, setProPicRadius] = useState(0)
+    
+    const [proPic, setProPic] = useState(ppic)
     const Globalconfig = useContext(ConfigContext)
 
     //Firebase Config
@@ -25,6 +33,7 @@ const LoginForm = () => {
     auth.signOut()
     return(
         <>
+            <img id="fbLogo" src={fbLogo}></img>
             <div style={{display:loginDisplay}} id="loginForm">
                 <img id="fbWrittenLogo" src={fbWrittenLogo}></img>
                 <br></br>
@@ -72,11 +81,26 @@ const LoginForm = () => {
                 <a href="#">Forgotten password?</a>
                 <hr></hr>
                 <br></br>
-                <button id="createAcc" onClick={() => {setloginUpDisplay("none"); setsignUpDisplay("block")}}>Create New Account</button>
+                <button id="createAcc" onClick={() => {setloginUpDisplay("none"); setsignUpDisplay("block");}}>Create New Account</button>
             </div>
 
             <div style={{display:signUpDisplay}} id="signupform">
-                <img id="fbWrittenLogo" src={fbWrittenLogo}></img>
+                <img id="proPic" src={proPic} style={{borderRadius:proPicRadius, border:"5px solid black"}}></img>
+                <br></br>
+                <br></br>
+                <label style={{margin:"10px"}} htmlFor="proPic">Select a profile pictture</label>
+                <br></br>
+                <input type="file" style={{height:"inherit"}} name="proPic" id="proUpload" onChange={(img)=>{
+                    if (!img.target.files || img.target.files.length === 0) {
+                        setProPic("")
+                    }
+                    else{
+                        setProPic(URL.createObjectURL(img.target.files[0]))
+                    }
+
+                    setProPicRadius('100%')
+
+                }}></input>
                 <br></br>
                 <input type="text" id="fName" placeholder='First Name'></input>
                 <input type="text" id="lName" placeholder='Last Name'></input>
@@ -88,36 +112,49 @@ const LoginForm = () => {
                 <input id="dob" style={{width:'31.3vw'}} type="text" placeholder="Birthday: MM/DD/YYYY" onFocus={e => (e.target.type = "date")} onBlur={e => (e.target.type = "text")}></input>
                 <br></br>
                 <button id="SignUp" onClick={()=>{
-                    const fName = document.getElementById("fName").value
-                    const lName = document.getElementById("lName").value
+                    const fName = document.getElementById("fName").value.toLowerCase()
+                    const lName = document.getElementById("lName").value.toLowerCase()
                     const email = document.getElementById("emailSignUp").value
                     const password = document.getElementById("passwordSignUp").value
                     const dob = document.getElementById("dob").value
-                    // Firebase Sign Up
-                    createUserWithEmailAndPassword(auth,email,password).then(userInfo => {
-                        let user = {
-                            UID: userInfo.user.uid,
-                            first_name: fName,
-                            last_name: lName,
-                            email: email,
-                            DOB: dob,
-                            profile_picture: ""
-                        }
-                        set(ref(db,'users/' + email.substring(0,email.lastIndexOf('@'))+dob),user)
-                        Toastify({
-                            text: "Sign up Success!",
-                            duration: 5000,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "center", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                              background: "linear-gradient(to right, #1877f2, ##95bcf0)",
-                            },
-                        }).showToast();
+                    let proPic = document.getElementById("proUpload").files[0]
+
+                    // Profile Picture upload to fireStore
+                    const storage = getStorage(firebaseApp);
+                    const imgRef = sRef(storage, 'users/'+fName+"_"+lName+"_"+dob+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)
+                    uploadBytes(imgRef,proPic).then(snap => {
+                        getDownloadURL(sRef(getStorage(),'users/'+fName+"_"+lName+"_"+dob+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)).then(url => {
+                            proPic = url.toString();
+                            console.log(proPic)
+                        })
+                        
+                        // Firebase Sign Up
+                        createUserWithEmailAndPassword(auth,email,password).then(userInfo => {
+                            let user = {
+                                UID: userInfo.user.uid,
+                                first_name: fName,
+                                last_name: lName,
+                                email: email,
+                                DOB: dob,
+                                profile_picture: proPic,
+                            }
+                            set(ref(db, 'users/'+fName+"_"+lName+"_"+dob),user)
+
+                            Toastify({
+                                text: "Sign up Success!",
+                                duration: 5000,
+                                close: true,
+                                gravity: "top", // `top` or `bottom`
+                                position: "center", // `left`, `center` or `right`
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                style: {
+                                background: "linear-gradient(to right, #1877f2, ##95bcf0)",
+                                },
+                            }).showToast();
+                        })
                     })
                 }}>Sign Up</button>
-                <button id="loginBtnBack" onClick={() => {setloginUpDisplay("block"); setsignUpDisplay("none")}}>Back to Login</button>
+                <button id="loginBtnBack" onClick={() => {setloginUpDisplay("block"); setsignUpDisplay("none");}}>Back to Login</button>
             </div>
         </>
     )
@@ -126,7 +163,6 @@ const LoginForm = () => {
 const LoginHolder = () => {
     return(
         <>
-            <img id="fbLogo" src={fbLogo}></img>
             <Fade>
                 <LoginForm/>
             </Fade>
