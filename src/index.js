@@ -3,14 +3,27 @@ import ReactDOM from 'react-dom'
 import GlobalContext from './GlobalContext.jsx';
 import { createRoot } from 'react-dom/client';
 
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+
 //Pages
 import Login from "./views/Login.jsx"
+import UserProfile from './views/UserProfile.jsx';
 
 const Main = () => {
   return(
     <>
       <GlobalContext>
-        <Login/>
+        <BrowserRouter>
+          <Routes>
+            <Route exact path="/" element={<Login/>}/>
+            <Route exact path="/userprofile" element={<UserProfile/>}/>
+          </Routes>
+        </BrowserRouter>
       </GlobalContext>
     </>
   )
