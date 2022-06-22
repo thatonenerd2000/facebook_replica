@@ -20,11 +20,15 @@ const GlobalContext = (props) => {
     //Global State Variables
     const [authenticatedStatus, setAuthStatus] = useState(false)
     const [firebaseApp, setFirebaseApp] = useState(FirebaseApp)
+    const [user, setUser] = useState()
+
     return(
         <ConfigContext.Provider value = {{
             authStatus: authenticatedStatus, 
             setAuthStatus,
             firebase:firebaseApp,
+            userProfile:user,
+            setUser
         }}>
             {props.children}
         </ConfigContext.Provider>

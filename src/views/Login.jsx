@@ -6,11 +6,12 @@ import fbWrittenLogo from "../media/facebookWrittenLogo.png"
 import ppic from "../media/ppic.png"
 
 import Fade from 'react-reveal/Fade';
-import GlobalContext, {ConfigContext} from '../GlobalContext';
+import {ConfigContext} from '../GlobalContext';
 import {signInWithEmailAndPassword,createUserWithEmailAndPassword,getAuth} from "firebase/auth"
 import { getDatabase, ref, set } from "firebase/database";
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 import {ref as sRef} from "firebase/storage"
+import { useNavigate } from "react-router-dom";
 
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
@@ -23,6 +24,7 @@ const LoginForm = () => {
     const [proPicRadius, setProPicRadius] = useState(0)
     
     const [proPic, setProPic] = useState(ppic)
+    const [userId, setUserId] = useState("")
     const Globalconfig = useContext(ConfigContext)
 
     //Firebase Config
@@ -30,7 +32,17 @@ const LoginForm = () => {
     const auth = getAuth(firebaseApp)
     const db = getDatabase ()
 
+    //React Router
+    const navigate = useNavigate()
     auth.signOut()
+
+    useEffect(() => {
+        if(Globalconfig.authStatus === true){
+            navigate("/userprofile")
+            Globalconfig.setUser(userId)
+        }
+    },[Globalconfig.authStatus,userId])
+
     return(
         <>
             <img id="fbLogo" src={fbLogo}></img>
@@ -46,10 +58,9 @@ const LoginForm = () => {
                     const password = document.getElementById("password").value;
                     // FireBase Login
                     signInWithEmailAndPassword(auth,email,password).catch(error => {
-                        console.log(error)
                         Globalconfig.setAuthStatus(false)
                         Toastify({
-                            text: "Something went wrong, Please check your credentials",
+                            text: "Login failed, Please check your credentials",
                             duration: 5000,
                             close: true,
                             gravity: "top", // `top` or `bottom`
@@ -62,6 +73,7 @@ const LoginForm = () => {
                     })
                     auth.onAuthStateChanged(user => {
                         if(user){
+                            setUserId(user.uid)
                             Globalconfig.setAuthStatus(true)
                             Toastify({
                                 text: "Log in Success!",
@@ -73,7 +85,7 @@ const LoginForm = () => {
                                 style: {
                                   background: "linear-gradient(to right, #00b09b, #96c93d)",
                                 },
-                            }).showToast();
+                            }).showToast()
                         }
                     })
                 }}>Log In</button>
@@ -118,39 +130,46 @@ const LoginForm = () => {
                     const password = document.getElementById("passwordSignUp").value
                     const dob = document.getElementById("dob").value
                     let proPic = document.getElementById("proUpload").files[0]
+                    let uid = ""
 
-                    // Profile Picture upload to fireStore
-                    const storage = getStorage(firebaseApp);
-                    const imgRef = sRef(storage, 'users/'+fName+"_"+lName+"_"+dob+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)
-                    uploadBytes(imgRef,proPic).then(snap => {
-                        getDownloadURL(sRef(getStorage(),'users/'+fName+"_"+lName+"_"+dob+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)).then(url => {
-                            proPic = url.toString();
-                            console.log(proPic)
-                        })
-                        
-                        // Firebase Sign Up
-                        createUserWithEmailAndPassword(auth,email,password).then(userInfo => {
-                            let user = {
-                                UID: userInfo.user.uid,
-                                first_name: fName,
-                                last_name: lName,
-                                email: email,
-                                DOB: dob,
-                                profile_picture: proPic,
-                            }
-                            set(ref(db, 'users/'+fName+"_"+lName+"_"+dob),user)
+                    // Firebase Sign Up
+                    createUserWithEmailAndPassword(auth,email,password).then(userInfo => {
+                        uid = userInfo.user.uid
 
-                            Toastify({
-                                text: "Sign up Success!",
-                                duration: 5000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "center", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                background: "linear-gradient(to right, #1877f2, ##95bcf0)",
-                                },
-                            }).showToast();
+                        // Profile Picture upload to fireStore
+                        const storage = getStorage(firebaseApp);
+                        const imgRef = sRef(storage, 'users/'+uid+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)
+                        uploadBytes(imgRef,proPic).then(snap => {
+                            getDownloadURL(sRef(getStorage(),'users/'+uid+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)).then(url => {
+                                proPic = url.toString();
+                                console.log(proPic)
+                                let user = {
+                                    UID: userInfo.user.uid,
+                                    first_name: fName,
+                                    last_name: lName,
+                                    email: email,
+                                    DOB: dob,
+                                    profile_picture: proPic,
+                                }
+
+                                // Push the data to firebase database
+                                set(ref(db, 'users/'+fName+"_"+lName+"_"+dob),user)
+
+                                //Toast Success
+                                Toastify({
+                                    text: "Sign up Success!",
+                                    duration: 5000,
+                                    close: true,
+                                    gravity: "top", // `top` or `bottom`
+                                    position: "center", // `left`, `center` or `right`
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                    background: "linear-gradient(to right, #1877f2, ##95bcf0)",
+                                    },
+                                }).showToast();
+                                setUserId(uid)
+                                Globalconfig.setAuthStatus(true)
+                            })
                         })
                     })
                 }}>Sign Up</button>
