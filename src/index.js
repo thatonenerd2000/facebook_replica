@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useContext } from 'react';
 import ReactDOM from 'react-dom'
 import GlobalContext from './GlobalContext.jsx';
+import {ConfigContext} from './GlobalContext';
 import { createRoot } from 'react-dom/client';
+import { getDatabase } from "firebase/database";
 
 import {
   BrowserRouter,
@@ -14,6 +16,7 @@ import {
 import Login from "./views/Login.jsx"
 import UserProfile from './views/UserProfile.jsx';
 
+
 const Main = () => {
   return(
     <>
@@ -21,7 +24,7 @@ const Main = () => {
         <BrowserRouter>
           <Routes>
             <Route exact path="/" element={<Login/>}/>
-            <Route exact path="/userprofile" element={<UserProfile/>}/>
+            <Route exact path="/userprofile" element={<UserProfile />}/>
           </Routes>
         </BrowserRouter>
       </GlobalContext>

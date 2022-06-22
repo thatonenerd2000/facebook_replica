@@ -24,7 +24,6 @@ const LoginForm = () => {
     const [proPicRadius, setProPicRadius] = useState(0)
     
     const [proPic, setProPic] = useState(ppic)
-    const [userId, setUserId] = useState("")
     const Globalconfig = useContext(ConfigContext)
 
     //Firebase Config
@@ -39,9 +38,8 @@ const LoginForm = () => {
     useEffect(() => {
         if(Globalconfig.authStatus === true){
             navigate("/userprofile")
-            Globalconfig.setUser(userId)
         }
-    },[Globalconfig.authStatus,userId])
+    },[Globalconfig.authStatus,Globalconfig.userId])
 
     return(
         <>
@@ -73,7 +71,7 @@ const LoginForm = () => {
                     })
                     auth.onAuthStateChanged(user => {
                         if(user){
-                            setUserId(user.uid)
+                            Globalconfig.setUserID(user.uid)
                             Globalconfig.setAuthStatus(true)
                             Toastify({
                                 text: "Log in Success!",
@@ -153,7 +151,7 @@ const LoginForm = () => {
                                 }
 
                                 // Push the data to firebase database
-                                set(ref(db, 'users/'+fName+"_"+lName+"_"+dob),user)
+                                set(ref(db, 'users/'+userInfo.user.uid),user)
 
                                 //Toast Success
                                 Toastify({
@@ -167,7 +165,7 @@ const LoginForm = () => {
                                     background: "linear-gradient(to right, #1877f2, ##95bcf0)",
                                     },
                                 }).showToast();
-                                setUserId(uid)
+                                Globalconfig.setUserID(uid)
                                 Globalconfig.setAuthStatus(true)
                             })
                         })
