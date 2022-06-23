@@ -10,61 +10,18 @@ const ProPicAndCover = () => {
     const Globalconfig = useContext(ConfigContext)
     const [userInfo, setUserInfo] = useState({}) 
     useEffect(() => {
-        // const storageRef = ref(getDatabase(),'users/' + Globalconfig.userProfile);
-        //  let data = "";
-        //  onValue(storageRef, (snapshot) => {
-        //      data = snapshot.val();
-        //      setUserInfo(data)
-        //      console.log(userInfo)
-        //  }) 
         getUserInfo(Globalconfig.userProfile,getDatabase(),setUserInfo)
+        console.log(userInfo)
     },[])
 
     return(
         <>
             <button onClick={()=>{}}>Test It</button>
-            <h1>{userInfo.email}</h1>
+            <h1>{userInfo.first_name} {userInfo.last_name}'s profile page</h1>
+            <img id="userProfilePicture" src={userInfo.profile_picture}></img>
         </>
     )
 }
-
-// class UserProfile extends React.Component {
-//     constructor() {
-//         super()
-//         this.state = {
-//             user: {},
-//         }
-//     }
-    
-//     static contextType = ConfigContext
-
-//     componentDidMount() {
-//         const GlobalContext = this.context
-
-//         const storageRef = ref(getDatabase(),'users/' + GlobalContext.userProfile);
-//         let data = "";
-//         onValue(storageRef, (snapshot) => {
-//             data = snapshot.val();
-//         })
-
-//         this.setState({
-//             user: data
-//         })
-
-//         console.log(this.state.user)
-//     }
-    
-//     render() {
-
-//         return(
-//             <>
-//                 {/* <h1>{this.state.user}</h1>
-//                 <button onClick={()=>{console.log(this.state.user.email)}}>Test Itt</button> */}
-//             </>
-//         )
-//     }
-// }
-
 
 export default ProPicAndCover
 
