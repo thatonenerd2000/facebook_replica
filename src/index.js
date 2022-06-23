@@ -17,7 +17,6 @@ import {
 import Login from "./views/Login.jsx"
 import UserProfile from './views/UserProfile.jsx';
 
-
 const Main = () => {
   return(
     <>

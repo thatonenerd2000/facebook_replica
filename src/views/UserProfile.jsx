@@ -3,7 +3,8 @@ import { getDatabase, ref, onValue, get, update} from "firebase/database";
 import { getStorage } from "firebase/storage";
 
 import '../style.scss'
-import Container from 'react-bootstrap/Container';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container } from 'react-bootstrap';
 import {FaUpload} from 'react-icons/fa'
 import {ConfigContext} from '../GlobalContext';
 
@@ -28,27 +29,30 @@ const ProPicAndCover = () => {
     
 
     return(
-        <Container> 
-            <input type="file" id="coverPhoto" hidden onChange={() => {
-                const file = document.getElementById("coverPhoto").files[0]
-                uploadImageAndgetUrl(getStorage(), file, Globalconfig.userProfile, setCoverUrl)
-            }}></input>
-            
-            {/* Code block to display if the user doo't have a cover photo */}
-            <div id="coverPic" style={{display: userInfo.cover_picture_url === '' ? 'block' : 'none'}}>
-                <div id="coverText" onClick={() => {
-                    document.getElementById("coverPhoto").click()
-                }}>
-                    <h2>Selct a cover photo</h2>
-                    <FaUpload/>
+        <>  
+            <Container>
+                <input type="file" id="coverPhoto" hidden onChange={() => {
+                    const file = document.getElementById("coverPhoto").files[0]
+                    uploadImageAndgetUrl(getStorage(), file, Globalconfig.userProfile, setCoverUrl)
+                }}></input>
+                
+                {/* Code block to display if the user doo't have a cover photo */}
+                <div id="coverPic" style={{display: userInfo.cover_picture_url === '' ? 'block' : 'none'}}>
+                    <div id="coverText" onClick={() => {
+                        document.getElementById("coverPhoto").click()
+                    }}>
+                        <h2>Selct a cover photo</h2>
+                        <FaUpload/>
+                    </div>
                 </div>
-            </div>
 
-            {/* Code block to display if the user have a cover photo */}
-            <img src={userInfo.cover_picture_url} id="coverPic" style={{display: userInfo.cover_picture_url === '' ? 'none' : 'block'}}></img>
+                {/* Code block to display if the user have a cover photo */}
+                <img src={userInfo.cover_picture_url} id="coverPic" style={{display: userInfo.cover_picture_url === '' ? 'none' : 'block'}}></img>
 
-            <img src={userInfo.profile_picture} id="userProfilePicture"></img>
-        </Container>
+                {/*Profile Picture*/}
+                <img src={userInfo.profile_picture} id="userProfilePicture"></img>
+            </Container>
+        </>
     )
     
 }

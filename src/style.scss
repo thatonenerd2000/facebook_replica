@@ -172,12 +172,12 @@ body, html {
 // User Profile Page
 #userProfilePicture {
     height:30vh;
-    width: 30vh;
+    width:30vh;
     background-position: center center;
     object-fit: cover;
     border-radius:100%;
     position: relative;
-    top:25vh;
+    top:-15vh;
     left:5vh;
     box-shadow:
     2.8px 2.8px 5px rgba(0, 0, 0, 0.028),
@@ -191,9 +191,9 @@ body, html {
 
 #coverPic{
     height:45vh;
-    width:100vw;
+    width:100%;
     background-color: grey;
-    position: absolute;
+    position: relative;
     margin:0px;
     padding:0px;
     text-align: center;
