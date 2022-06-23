@@ -135,7 +135,7 @@ const LoginForm = () => {
                         uid = userInfo.user.uid
 
                         // Profile Picture upload to fireStore
-                        const storage = getStorage(firebaseApp);
+                        const storage = getStorage();
                         const imgRef = sRef(storage, 'users/'+uid+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)
                         uploadBytes(imgRef,proPic).then(snap => {
                             getDownloadURL(sRef(getStorage(),'users/'+uid+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)).then(url => {
@@ -148,6 +148,7 @@ const LoginForm = () => {
                                     email: email,
                                     DOB: dob,
                                     profile_picture: proPic,
+                                    cover_picture_url: "",
                                 }
 
                                 // Push the data to firebase database
