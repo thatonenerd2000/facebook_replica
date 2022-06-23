@@ -167,4 +167,8 @@
 // User Profile Page
 #userProfilePicture {
     height:30vh;
+    width: 30vh;
+    background-position: center center;
+    object-fit: cover;
+    border-radius:100%;
 }
