@@ -41,6 +41,11 @@ const LoginForm = () => {
         }
     },[Globalconfig.authStatus,Globalconfig.userId])
 
+    //Convert the first letter of a given string to uppercase and rest to lowercase
+    const capitalize = (str) => {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+    }
+
     return(
         <>
             <img id="fbLogo" src={fbLogo}></img>
@@ -143,12 +148,15 @@ const LoginForm = () => {
                                 console.log(proPic)
                                 let user = {
                                     UID: userInfo.user.uid,
-                                    first_name: fName,
-                                    last_name: lName,
+                                    first_name: capitalize(fName),
+                                    last_name: capitalize(lName),
                                     email: email,
                                     DOB: dob,
                                     profile_picture: proPic,
+
+                                    //These will be updated later
                                     cover_picture_url: "",
+                                    bio:""
                                 }
 
                                 // Push the data to firebase database

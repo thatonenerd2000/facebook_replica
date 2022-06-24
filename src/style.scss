@@ -212,3 +212,55 @@ body, html {
     padding:20px;
     cursor: pointer;
 }
+
+#username{
+    font-family: Helvetica;
+    position: relative;
+    top:-29vh;
+    left:21vw;
+}
+
+#bioEdit{
+    font-family: Helvetica;
+    position: relative;
+    top:-29vh;
+    left:21vw;
+    color:rgb(86, 86, 86);
+    cursor:pointer;
+}
+
+#bioEdit:hover{
+    text-decoration: underline;
+}
+
+#bioInput{
+    position: relative;
+    top:-29vh;
+    left:21vw;
+    width:20vw;
+    height:5vh;
+    border:1px solid grey;
+    border-radius:5px;
+    padding:5px;
+}
+
+#bioSubmit{
+    position: relative;
+    top:-29vh;
+    left:21vw;
+    width:20vw;
+    height:5vh;
+    background-color:#36a420;
+    color:white;
+    font-weight: bold;
+    transition:0.1s ease-in-out;
+    border-radius:5px;
+}
+
+#bio{
+    font-family: Helvetica;
+    position: relative;
+    top:-29vh;
+    left:21vw;
+    color:rgb(86, 86, 86)
+}
