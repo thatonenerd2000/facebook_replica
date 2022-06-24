@@ -13,6 +13,18 @@ import { getStorage, uploadBytes, ref as sRef, getDownloadURL } from "firebase/s
     last_name: "doe"
     profile_picture: "url of profile picture",
     cover_picture_url: "" or "url of cover picture"
+    bio: "bio"
+    social: {
+        instagram: {
+            username: "username"
+            show: true
+        }
+    }
+    location: {
+        city: "city"
+        state: "state"
+        country: "country"
+    }
 */
 export function getUserInfo(uid, database, stateSetter){
     const storageRef = ref(database,'users/' + uid);

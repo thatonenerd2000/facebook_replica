@@ -13,6 +13,8 @@ import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 import {ref as sRef} from "firebase/storage"
 import { useNavigate } from "react-router-dom";
 
+import {getUserInfo, uploadImageAndgetUrl, writeData} from '../funcions/firebaseMethods.js'
+
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
 
@@ -36,10 +38,15 @@ const LoginForm = () => {
     auth.signOut()
 
     useEffect(() => {
+        // Load user's info 
+        if(Globalconfig.UID !== ''){
+            getUserInfo(Globalconfig.UID, getDatabase(), Globalconfig.setUserData)
+        }
+        
         if(Globalconfig.authStatus === true){
             navigate("/userprofile")
         }
-    },[Globalconfig.authStatus,Globalconfig.userId])
+    },[Globalconfig.authStatus,Globalconfig.userId,Globalconfig.UID])
 
     //Convert the first letter of a given string to uppercase and rest to lowercase
     const capitalize = (str) => {
@@ -78,17 +85,19 @@ const LoginForm = () => {
                         if(user){
                             Globalconfig.setUserID(user.uid)
                             Globalconfig.setAuthStatus(true)
-                            Toastify({
-                                text: "Log in Success!",
-                                duration: 5000,
-                                close: true,
-                                gravity: "top", // `top` or `bottom`
-                                position: "center", // `left`, `center` or `right`
-                                stopOnFocus: true, // Prevents dismissing of toast on hover
-                                style: {
-                                  background: "linear-gradient(to right, #00b09b, #96c93d)",
-                                },
-                            }).showToast()
+                            if(Globalconfig.authStatus === true){
+                                Toastify({
+                                    text: "Log in Success!",
+                                    duration: 5000,
+                                    close: true,
+                                    gravity: "top", // `top` or `bottom`
+                                    position: "center", // `left`, `center` or `right`
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                    },
+                                }).showToast()
+                            }
                         }
                     })
                 }}>Log In</button>
@@ -156,26 +165,40 @@ const LoginForm = () => {
 
                                     //These will be updated later
                                     cover_picture_url: "",
-                                    bio:""
+                                    bio:"",
+                                    social:{
+                                        instagram:{
+                                            show: true,
+                                            username:"",
+                                        }
+                                    },
+                                    location: {
+                                        city: "",
+                                        state: "",
+                                        country: ""
+                                    }
                                 }
 
                                 // Push the data to firebase database
                                 set(ref(db, 'users/'+userInfo.user.uid),user)
 
-                                //Toast Success
-                                Toastify({
-                                    text: "Sign up Success!",
-                                    duration: 5000,
-                                    close: true,
-                                    gravity: "top", // `top` or `bottom`
-                                    position: "center", // `left`, `center` or `right`
-                                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                                    style: {
-                                    background: "linear-gradient(to right, #1877f2, ##95bcf0)",
-                                    },
-                                }).showToast();
-                                Globalconfig.setUserID(uid)
+                                Globalconfig.setUserID(user.uid)
                                 Globalconfig.setAuthStatus(true)
+
+                                if(Globalconfig.authStatus === true){
+                                    //Toast Sign up Success
+                                    Toastify({
+                                        text: "Sign up Success!",
+                                        duration: 5000,
+                                        close: true,
+                                        gravity: "top", // `top` or `bottom`
+                                        position: "center", // `left`, `center` or `right`
+                                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                                        style: {
+                                        background: "linear-gradient(to right, #1877f2, ##95bcf0)",
+                                        },
+                                    }).showToast();
+                                }
                             })
                         })
                     })

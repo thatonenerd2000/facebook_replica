@@ -1,3 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Ruda&display=swap');
+
+// Loading Animatoon
+.loader{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+}
+.lds-circle,
+.lds-circle div {
+  box-sizing: border-box;
+}
+.lds-circle {
+  display: inline-block;
+  transform: translateZ(1px);
+}
+.lds-circle > div {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: lds-circle 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+@keyframes lds-circle {
+  0%, 100% {
+    animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+  }
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(1800deg);
+    animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+  }
+  100% {
+    transform: rotateY(3600deg);
+  }
+}
+
 body, html {
   margin: 0;
   padding: 0;
@@ -170,6 +213,17 @@ body, html {
 
 
 // User Profile Page
+#ProPicAndCoverContainer{
+    background:linear-gradient(#2d2f30, #242526);
+    height:61vh;
+    margin-bottom:10px;
+}
+
+#userProfileContainer{
+    height:100vh;
+    background-color: #18191A;
+}
+
 #userProfilePicture {
     height:30vh;
     width:30vh;
@@ -199,6 +253,13 @@ body, html {
     text-align: center;
     background-position: center center;
     object-fit: cover;
+    box-shadow:
+    2.8px 2.8px 5px rgba(0, 0, 0, 0.028),
+    6.7px 6.7px 9.9px rgba(0, 0, 0, 0.04),
+    12.5px 12.5px 15.3px rgba(0, 0, 0, 0.048),
+    22.3px 22.3px 22.5px rgba(0, 0, 0, 0.054),
+    41.8px 41.8px 36.6px rgba(0, 0, 0, 0.059),
+    100px 100px 80px rgba(0, 0, 0, 0.07);   
 }
 
 #coverText{
@@ -214,10 +275,11 @@ body, html {
 }
 
 #username{
-    font-family: Helvetica;
+    font-family: 'Ruda', sans-serif;
     position: relative;
     top:-29vh;
     left:21vw;
+    color:white;
 }
 
 #bioEdit{
@@ -262,5 +324,28 @@ body, html {
     position: relative;
     top:-29vh;
     left:21vw;
-    color:rgb(86, 86, 86)
+    color:rgb(189, 189, 189)
+}
+
+#userFeedContainer{
+    position: relative;
+    color:white;
+}
+
+#userFeedInfo{
+    background-color:#242526;
+}
+
+#userFeedUserInfo{
+    background-color:#242526;
+    padding: 20px;
+    font-family: 'Ruda', sans-serif;
+}
+
+#instaAdd{
+    cursor:pointer;
+}
+
+#instaAdd:hover {
+    text-decoration: underline;
 }
