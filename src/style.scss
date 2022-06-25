@@ -282,23 +282,19 @@ body, html {
     color:white;
 }
 
-#bioEdit{
+#textEdit{
     font-family: Helvetica;
     position: relative;
-    top:-29vh;
-    left:21vw;
-    color:rgb(86, 86, 86);
+    color:rgb(175, 175, 175);
     cursor:pointer;
 }
 
-#bioEdit:hover{
+#textEdit:hover{
     text-decoration: underline;
 }
 
-#bioInput{
+#textInput{
     position: relative;
-    top:-29vh;
-    left:21vw;
     width:20vw;
     height:5vh;
     border:1px solid grey;
@@ -306,10 +302,8 @@ body, html {
     padding:5px;
 }
 
-#bioSubmit{
+#textSubmit{
     position: relative;
-    top:-29vh;
-    left:21vw;
     width:20vw;
     height:5vh;
     background-color:#36a420;
@@ -348,4 +342,10 @@ body, html {
 
 #instaAdd:hover {
     text-decoration: underline;
+}
+
+#instaBio{
+    font-family: 'Ruda', sans-serif;
+    position: relative;
+    color:white;
 }

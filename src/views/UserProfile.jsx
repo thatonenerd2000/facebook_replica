@@ -13,6 +13,9 @@ import {FaUpload} from 'react-icons/fa'
 import {AiOutlineEdit, AiOutlineInstagram} from 'react-icons/ai'
 import {ConfigContext} from '../GlobalContext';
 
+// Components
+import InputEditFirebase from '../components/InputEditFirebase';
+
 
 import {getUserInfo, uploadImageAndgetUrl, writeData} from '../funcions/firebaseMethods.js'
 
@@ -61,25 +64,9 @@ const ProPicAndCover = () => {
                     {/*Profile Picture*/}
                     <img src={Globalconfig.userData.profile_picture} id="userProfilePicture"></img>
                     <h2 id="username">{Globalconfig.userData.first_name} {Globalconfig.userData.last_name}</h2>
-    
-                    {/*Edit Profile Bio*/}
-                    <p id="bioEdit" style={{display: Globalconfig.userData.bio === "" ? "block" : "none"}} onClick={() => {
-                        document.getElementById("bioEdit").style.display = "none"
-                        document.getElementById("bioInput").style.display = "block"
-                        document.getElementById("bioSubmit").style.display = "block"
-                        document.getElementById("bioInput").focus()
-                    }}>Click to add a bio <AiOutlineEdit/></p>
-                    <input id="bioInput" type="text" placeholder='Add a bio' style={{display:'none'}}></input>
-                    <Button id="bioSubmit" variant="success" style={{display:'none'}} onClick={() => {
-                        // Push the bio to the database and update the user's info
-                        update(ref(getDatabase(),'users/' + Globalconfig.userData.UID), {bio: document.getElementById("bioInput").value})
-                        document.getElementById("bioInput").style.display = "none"
-                        document.getElementById("bioSubmit").style.display = "none"
-                        Globalconfig.setUserData({...Globalconfig.userData, bio: document.getElementById("bioInput").value})
-                    }}>Save</Button>
-    
-                    {/* User's bio */}
-                    <p id="bio" style={{display: Globalconfig.userData.bio === "" ? "none" : "block"}}>"{Globalconfig.userData.bio}"</p>
+                    
+                    {/* User Bio */}
+                    <InputEditFirebase fireBaseObjKey="bio" fireBasePathToUpdate={"users/"+Globalconfig.userData.UID} id="bio" textValue={Globalconfig.userData.bio} inputText={"Click to add bio"} uid={Globalconfig.userData.UID}>"{Globalconfig.userData.bio}"</InputEditFirebase>
                 </Container>
             </div>
         )
@@ -115,24 +102,10 @@ const UserFeed = () => {
                             <h4>About You</h4>
                             <hr></hr>
                             <p>Birthday: {new Date(Globalconfig.userData.DOB).toUTCString().slice(4,16)}</p>
-                            
-                            {/*Instagram*/}
-                            <p id="instaAdd" style={{display: Globalconfig.userData.social.instagram.username === "" ? "block" : "none"}} onClick={() => {
-                                document.getElementById("instaInput").style.display = "block"
-                                document.getElementById("instaSubmit").style.display = "block"
-                                document.getElementById("instaAdd").style.display = "none"
-                                document.getElementById("instaInput").focus()
-                            }}><AiOutlineInstagram style={{color:"#fccc63"}}/> Click to add instagram profile</p>
 
-                            <input type="text" id="instaInput" placeholder="Add instagram profile" style={{display:"none"}}></input>
-                            <Button id="instaSubmit" variant="success" style={{display: "none"}} onClick={() => {
-                                // Push the instagram to the database and update the user's info
-                                update(ref(getDatabase(),'users/' + Globalconfig.userData.UID + "/social/instagram/"), {username: document.getElementById("instaInput").value})
-                                document.getElementById("instaInput").style.display = "none"
-                                document.getElementById("instaSubmit").style.display = "none"
-                            }
-                            }>Save</Button>
-                            <p id="insta" style={{display: Globalconfig.userData.social.instagram.username === "" ? "none" : "block"}}><AiOutlineInstagram/> {Globalconfig.userData.social.instagram.username}</p>
+                            {/*Instagram*/}
+                            <InputEditFirebase fireBaseObjKey="username" fireBasePathToUpdate={"users/"+Globalconfig.userData.UID+"/social/instagram"} id="instaBio" textValue={Globalconfig.userData.social.instagram.username} inputText={"Click to add instagram profile"} uid={Globalconfig.userData.UID}><AiOutlineInstagram/> {Globalconfig.userData.social.instagram.username}</InputEditFirebase>
+
 
                             {/*From*/}
                             <p id="fromAdd" style={{display: Globalconfig.userData.from === "" ? "block" : "none"}} onClick={() => {

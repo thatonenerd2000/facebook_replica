@@ -13,7 +13,7 @@ import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 import {ref as sRef} from "firebase/storage"
 import { useNavigate } from "react-router-dom";
 
-import {getUserInfo, uploadImageAndgetUrl, writeData} from '../funcions/firebaseMethods.js'
+import {getUserInfo} from '../funcions/firebaseMethods.js'
 
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
