@@ -262,8 +262,34 @@ body, html {
     100px 100px 80px rgba(0, 0, 0, 0.07);   
 }
 
+#coverPicUpload{
+    height:45vh;
+    width:100%;
+    background-color: grey;
+    position: relative;
+    margin:0px;
+    padding:0px;
+    text-align: center;
+    background-position: center center;
+    object-fit: cover;
+    box-shadow:
+    2.8px 2.8px 5px rgba(0, 0, 0, 0.028),
+    6.7px 6.7px 9.9px rgba(0, 0, 0, 0.04),
+    12.5px 12.5px 15.3px rgba(0, 0, 0, 0.048),
+    22.3px 22.3px 22.5px rgba(0, 0, 0, 0.054),
+    41.8px 41.8px 36.6px rgba(0, 0, 0, 0.059),
+    100px 100px 80px rgba(0, 0, 0, 0.07);   
+}
+
+#coverSubmit{
+    left:33.6vw;
+    position: relative;
+    height: fit-content;
+    top:30%;
+}
+
 #coverText{
-    left:12vw;
+    left:26vw;
     position: relative;
     height: fit-content;
     top:30%;
@@ -281,6 +307,8 @@ body, html {
     left:21vw;
     color:white;
 }
+
+// User Feed Left
 
 #textEdit{
     font-family: Helvetica;
@@ -321,6 +349,11 @@ body, html {
     color:rgb(189, 189, 189)
 }
 
+#location{
+    color:white;
+    font-family: Helvetica;
+}
+
 #userFeedContainer{
     position: relative;
     color:white;
@@ -334,9 +367,42 @@ body, html {
     background-color:#242526;
     padding: 20px;
     font-family: 'Ruda', sans-serif;
+    border-radius: 10px;
 }
 
 .hoverUnderline:hover{
     text-decoration: underline;
     cursor: pointer;
+}
+
+// User Feed Right
+
+#userFeedInfo{
+    background-color:#18191A;
+    font-family: 'Ruda', sans-serif;
+}
+
+#status{
+    background-color: #242526;
+    padding:20px;
+    border-radius: 10px;
+}
+
+#statusInput{
+    width:calc(100% - 4vw);
+    border-radius: 10px;
+    background-color: #4E4F50;
+    border:0px;
+    padding: 5px;
+    padding-left: 10px;
+    color:#AFB2B5
+}
+
+#statusProPic{
+    background-position: center center;
+    object-fit: cover;
+    height:4vh;
+    width: 4vh;
+    border-radius: 100%;
+    margin-right:10px;
 }

@@ -10,7 +10,8 @@ import Button from 'react-bootstrap/Button';
 
 // Icons
 import {FaUpload} from 'react-icons/fa'
-import {AiOutlineEdit, AiOutlineInstagram} from 'react-icons/ai'
+import {AiOutlineEdit, AiOutlineInstagram, AiOutlineHome} from 'react-icons/ai'
+
 import {ConfigContext} from '../GlobalContext';
 
 // Components
@@ -30,12 +31,6 @@ const ProPicAndCover = () => {
         if(Globalconfig.userData !== ""){
             setIsReady(true)
         }
-
-        if(coverUrl !== ""){
-            update(ref(getDatabase(),'users/' + Globalconfig.userData.UID), {cover_picture_url: coverUrl})
-            getUserInfo(Globalconfig.UID, getDatabase(), Globalconfig.setUserData)
-        }
-
     },[Globalconfig.userData])
     
 
@@ -43,20 +38,27 @@ const ProPicAndCover = () => {
         return(
             <div id="ProPicAndCoverContainer">  
                 <Container>
+                    {/* Code block to display if the user don't have a cover photo */}
                     <input type="file" id="coverPhoto" hidden onChange={() => {
                         const file = document.getElementById("coverPhoto").files[0]
                         uploadImageAndgetUrl(getStorage(), file, Globalconfig.UID, setCoverUrl)
-                        console.log(coverUrl)
+                        document.getElementById("coverSelectText").innerHTML = file.name
+                        document.getElementById("coverSubmit").style.display = "block"
                     }}></input>
                     
-                    {/* Code block to display if the user doo't have a cover photo */}
-                    <div id="coverPic" style={{display: Globalconfig.userData.cover_picture_url === '' ? 'block' : 'none'}}>
+                    <div id="coverPicUpload" style={{display: Globalconfig.userData.cover_picture_url === '' ? 'block' : 'none'}}>
                         <div id="coverText" onClick={() => {
                             document.getElementById("coverPhoto").click()
                         }}>
-                            <h2>Selct a cover photo</h2>
+                            <h2 id="coverSelectText">Selct a cover photo</h2>
                             <FaUpload/>
+                            <br></br>
                         </div>
+                        <Button id="coverSubmit" variant='success' style={{display:"none"}} onClick={() => {
+                            update(ref(getDatabase(),'users/' + Globalconfig.userData.UID), {cover_picture_url: coverUrl})
+                            getUserInfo(Globalconfig.UID, getDatabase(), Globalconfig.setUserData)
+                            document.getElementById("coverPicUpload").remove()
+                        }}>Upload</Button>
                     </div>
     
                     {/* Code block to display if the user have a cover photo */}
@@ -109,25 +111,12 @@ const UserFeed = () => {
 
 
                             {/*From*/}
-                            <p id="fromAdd" style={{display: Globalconfig.userData.from === "" ? "block" : "none"}} onClick={() => {
-                                document.getElementById("fromInput").style.display = "block"
-                                document.getElementById("fromSubmit").style.display = "block"
-                                document.getElementById("fromAdd").style.display = "none"
-                                document.getElementById("fromInput").focus()
-                            }
-                            }>Click to add your from</p>
-                            <input type="text" id="fromInput" placeholder="Add your from" style={{display:"none"}}></input>
-                            <Button id="fromSubmit" variant="success" style={{display: "none"}} onClick={() => {
-                                // Push the from to the database and update the user's info
-                                update(ref(getDatabase(),'users/' + Globalconfig.userData.UID + "/from/"), {from: document.getElementById("fromInput").value})
-                                document.getElementById("fromInput").style.display = "none"
-                                document.getElementById("fromSubmit").style.display = "none"
-                            }
-                            }>Save</Button>
-                            <p id="from" style={{display: Globalconfig.userData.from === "" ? "none" : "block"}}>From: {Globalconfig.userData.from}</p>
+                            <InputEditFirebase editIcon={<AiOutlineHome/>} fireBaseObjKey="location" fireBasePathToUpdate={"users/"+Globalconfig.userData.UID} id="location" textValue={Globalconfig.userData.location} inputText={"Click to add where you are from"} uid={Globalconfig.userData.UID}><AiOutlineHome/> {Globalconfig.userData.location}</InputEditFirebase>
                         </Col>
                         <Col xs={{span:8, offset:1}} id="userFeedInfo">
-                            hi
+                            <div id="status">
+                                <img id="statusProPic" src={Globalconfig.userData.profile_picture}></img><input type="text" placeholder="What's on your mind?" id="statusInput"></input>
+                            </div>
                         </Col>
                     </Row>
                 </Container> 

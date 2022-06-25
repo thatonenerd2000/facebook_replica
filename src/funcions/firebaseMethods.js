@@ -47,7 +47,6 @@ export function uploadImageAndgetUrl(database, Imgfile, uid, stateSetter){
     uploadBytes(storageRef,Imgfile).then(snap => {
         getDownloadURL(sRef(database, 'users/' + uid + '/cover_picture/' + file.name)).then(url => {
             stateSetter(url)
-            console.log(url)
         })
     })
 }
