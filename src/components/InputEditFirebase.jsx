@@ -8,39 +8,46 @@ import '../style.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import {AiOutlineEdit} from 'react-icons/ai'
 
 import {ConfigContext} from '../GlobalContext';
 
 const InputEditFirebase = (props) => {
     const Globalconfig = useContext(ConfigContext)
-    useEffect(() => {
-        console.log("props.textValue = " + props.textValue)
-        console.log("props.uid = " + props.uid)
-        console.log("props.inputText = " + props.inputText)
-        console.log("props.value = " + props.value)
-    },[])
-    return(
-        <div id={props.id}>
-            <p id={props.id+"textEdit"} style={{display: props.textValue === "" ? "block" : "none"}} onClick={() => {
-                document.getElementById(props.id+"textEdit").style.display = "none"
-                document.getElementById(props.id+"textInput").style.display = "block"
-                document.getElementById(props.id+"textSubmit").style.display = "block"
-                document.getElementById(props.id+"textInput").focus()
-            }}>{props.inputText}</p>
-            <input id={props.id+"textInput"} type="text" placeholder='Add a bio' style={{display:'none'}}></input>
-            <Button id={props.id+"textSubmit"} variant="success" style={{display:'none'}} onClick={() => {
-                let obj = {}
-                // Push the bio to the database and update the user's info
-                obj[props.fireBaseObjKey] = document.getElementById(props.id+"textInput").value
-                update(ref(getDatabase(),props. fireBasePathToUpdate), obj)
-                getUserInfo(Globalconfig.UID, getDatabase(), Globalconfig.setUserData)
-                document.getElementById(props.id+"textInput").style.display = "none"
-                document.getElementById(props.id+"textSubmit").style.display = "none"
-            }}>Save</Button>
 
-            <p style={{display: props.textValue === "" ? "none" : "block"}}>{props.children}</p>
-        </div>
-    )
+
+    if(props.textValue !== {}){
+        return(
+            <div id={props.id}>
+                <p className="hoverUnderline" id={props.id+"textEdit"} style={{display: props.textValue === "" ? "block" : "none",}} onClick={() => {
+                    document.getElementById(props.id+"textEdit").style.display = "none"
+                    document.getElementById(props.id+"textInput").style.display = "block"
+                    document.getElementById(props.id+"textSubmit").style.display = "block"
+                    document.getElementById(props.id+"textInput").focus()
+                }}>{props.editIcon} {props.inputText}</p>
+                <input id={props.id+"textInput"} type="text" placeholder='Add a bio' style={{display:'none'}}></input>
+                <Button id={props.id+"textSubmit"} variant="success" style={{display:'none'}} onClick={() => {
+                    let obj = {}
+                    // Push the bio to the database and update the user's info
+                    obj[props.fireBaseObjKey] = document.getElementById(props.id+"textInput").value
+                    update(ref(getDatabase(),props. fireBasePathToUpdate), obj)
+                    getUserInfo(Globalconfig.UID, getDatabase(), Globalconfig.setUserData)
+                    document.getElementById(props.id+"textEdit").remove()
+                    document.getElementById(props.id+"textInput").remove()
+                    document.getElementById(props.id+"textSubmit").remove()
+                }}>Save</Button>
+    
+                <p style={{display: props.textValue === "" ? "none" : "block"}}>{props.children}</p>
+            </div>
+        )
+    }
+    else{
+        return(
+            <div id={props.id}>
+                <p style={{display: props.textValue === "" ? "none" : "block"}}>{props.children}</p>
+            </div>
+        )
+    }
 }
 
 export default InputEditFirebase

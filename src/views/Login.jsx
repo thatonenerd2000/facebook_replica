@@ -154,7 +154,6 @@ const LoginForm = () => {
                         uploadBytes(imgRef,proPic).then(snap => {
                             getDownloadURL(sRef(getStorage(),'users/'+uid+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)).then(url => {
                                 proPic = url.toString();
-                                console.log(proPic)
                                 let user = {
                                     UID: userInfo.user.uid,
                                     first_name: capitalize(fName),
@@ -182,7 +181,7 @@ const LoginForm = () => {
                                 // Push the data to firebase database
                                 set(ref(db, 'users/'+userInfo.user.uid),user)
 
-                                Globalconfig.setUserID(user.uid)
+                                Globalconfig.setUserID(uid)
                                 Globalconfig.setAuthStatus(true)
 
                                 if(Globalconfig.authStatus === true){

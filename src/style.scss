@@ -263,7 +263,7 @@ body, html {
 }
 
 #coverText{
-    left:40vw;
+    left:12vw;
     position: relative;
     height: fit-content;
     top:30%;
@@ -336,16 +336,7 @@ body, html {
     font-family: 'Ruda', sans-serif;
 }
 
-#instaAdd{
-    cursor:pointer;
-}
-
-#instaAdd:hover {
+.hoverUnderline:hover{
     text-decoration: underline;
-}
-
-#instaBio{
-    font-family: 'Ruda', sans-serif;
-    position: relative;
-    color:white;
+    cursor: pointer;
 }
