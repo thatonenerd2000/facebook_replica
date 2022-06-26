@@ -15,8 +15,7 @@ import {ConfigContext} from '../GlobalContext';
 const InputEditFirebase = (props) => {
     const Globalconfig = useContext(ConfigContext)
 
-
-    if(props.textValue !== {}){
+    if(props.textValue === ""){
         return(
             <div id={props.id}>
                 <p className="hoverUnderline" id={props.id+"textEdit"} style={{display: props.textValue === "" ? "block" : "none",}} onClick={() => {
@@ -36,8 +35,6 @@ const InputEditFirebase = (props) => {
                     document.getElementById(props.id+"textInput").remove()
                     document.getElementById(props.id+"textSubmit").remove()
                 }}>Save</Button>
-    
-                <p style={{display: props.textValue === "" ? "none" : "block"}}>{props.children}</p>
             </div>
         )
     }

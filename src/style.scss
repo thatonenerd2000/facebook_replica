@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Ruda&display=swap');
 
+// Classes
+
+.clickable{
+    cursor: pointer;
+}
+
+.clickable:hover{
+    text-decoration: underline;
+}
+
 // Loading Animatoon
 .loader{
     position: fixed;
@@ -386,10 +396,11 @@ body, html {
     background-color: #242526;
     padding:20px;
     border-radius: 10px;
+    text-align: center;
 }
 
 #statusInput{
-    width:calc(100% - 4vw);
+    width:calc(100% - 10vw);
     border-radius: 10px;
     background-color: #4E4F50;
     border:0px;
@@ -405,4 +416,19 @@ body, html {
     width: 4vh;
     border-radius: 100%;
     margin-right:10px;
+}
+
+.status_types{
+    margin-left:10px;
+}
+
+.status_types:hover{
+    background-color:#4E4F50!important;
+}
+
+#statusSubmit{
+    color:white;
+    background-color:#0B5ED7;
+    border-radius: 10px;
+    margin-left:5px;
 }

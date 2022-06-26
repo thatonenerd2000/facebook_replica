@@ -31,7 +31,8 @@ const LoginForm = () => {
     //Firebase Config
     const firebaseApp = Globalconfig.firebase
     const auth = getAuth(firebaseApp)
-    const db = getDatabase ()
+    const db = Globalconfig.db
+    const storage = Globalconfig.storage
 
     //React Router
     const navigate = useNavigate()
@@ -40,7 +41,7 @@ const LoginForm = () => {
     useEffect(() => {
         // Load user's info 
         if(Globalconfig.UID !== ''){
-            getUserInfo(Globalconfig.UID, getDatabase(), Globalconfig.setUserData)
+            getUserInfo(Globalconfig.UID, db, Globalconfig.setUserData)
         }
         
         if(Globalconfig.authStatus === true){
@@ -149,10 +150,9 @@ const LoginForm = () => {
                         uid = userInfo.user.uid
 
                         // Profile Picture upload to fireStore
-                        const storage = getStorage();
                         const imgRef = sRef(storage, 'users/'+uid+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)
                         uploadBytes(imgRef,proPic).then(snap => {
-                            getDownloadURL(sRef(getStorage(),'users/'+uid+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)).then(url => {
+                            getDownloadURL(sRef(storage,'users/'+uid+"/profile_pictures/"+document.getElementById("proUpload").files[0].name)).then(url => {
                                 proPic = url.toString();
                                 let user = {
                                     UID: userInfo.user.uid,
@@ -171,10 +171,10 @@ const LoginForm = () => {
                                             username:"",
                                         }
                                     },
-                                    location: {
-                                        city: "",
-                                        state: "",
-                                        country: ""
+                                    location:"",
+                                    posts: {
+                                        count:0,
+                                        post_array:{}
                                     }
                                 }
 

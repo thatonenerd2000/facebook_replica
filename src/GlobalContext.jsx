@@ -1,5 +1,7 @@
 import React , {useState,useEffect} from 'react';
 import { initializeApp } from 'firebase/app';
+import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
 
 export const ConfigContext = React.createContext()
 
@@ -22,6 +24,8 @@ const GlobalContext = (props) => {
     const [firebaseApp, setFirebaseApp] = useState(FirebaseApp)
     const [userID, setUserID] = useState("")
     const [userDataRet, setUserData] = useState('')
+    const [database,setDatabase] = useState(getDatabase())
+    const [StorageFirebase, setStorageFirebase] = useState(getStorage())
 
     return(
         <ConfigContext.Provider value = {{
@@ -31,7 +35,9 @@ const GlobalContext = (props) => {
             UID:userID,
             setUserID,
             userData:userDataRet,
-            setUserData
+            setUserData,
+            db:database,
+            storage:StorageFirebase
         }}>
             {props.children}
         </ConfigContext.Provider>

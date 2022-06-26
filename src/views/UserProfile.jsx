@@ -10,7 +10,8 @@ import Button from 'react-bootstrap/Button';
 
 // Icons
 import {FaUpload} from 'react-icons/fa'
-import {AiOutlineEdit, AiOutlineInstagram, AiOutlineHome} from 'react-icons/ai'
+import {AiOutlineEdit, AiOutlineInstagram, AiOutlineHome, AiOutlineFileImage} from 'react-icons/ai'
+import {GoLocation} from 'react-icons/go'
 
 import {ConfigContext} from '../GlobalContext';
 
@@ -18,20 +19,29 @@ import {ConfigContext} from '../GlobalContext';
 import InputEditFirebase from '../components/InputEditFirebase';
 
 
-import {getUserInfo, uploadImageAndgetUrl, writeData} from '../funcions/firebaseMethods.js'
+import {getUserInfo, uploadImageAndgetUrl, writeData, updateData, makeAPost} from '../funcions/firebaseMethods.js'
 
 
 const ProPicAndCover = () => {
     const Globalconfig = useContext(ConfigContext)
     const [coverUrl, setCoverUrl] = useState('')
     const [isReady, setIsReady] = useState(false)
+
+    const db = Globalconfig.db
+    const storage = Globalconfig.storage
     
     useEffect(() => {
         // Wait for data to load
         if(Globalconfig.userData !== ""){
             setIsReady(true)
         }
-    },[Globalconfig.userData])
+
+        if(coverUrl !== "" && Globalconfig.userData.cover_picture_url === ""){
+            document.getElementById("coverSubmit").style.display = "block"
+        }
+    },[Globalconfig.userData,coverUrl])
+
+    const handleDataChange = () => {getUserInfo(Globalconfig.UID, db, Globalconfig.setUserData)}
     
 
     if(isReady){
@@ -41,9 +51,8 @@ const ProPicAndCover = () => {
                     {/* Code block to display if the user don't have a cover photo */}
                     <input type="file" id="coverPhoto" hidden onChange={() => {
                         const file = document.getElementById("coverPhoto").files[0]
-                        uploadImageAndgetUrl(getStorage(), file, Globalconfig.UID, setCoverUrl)
+                        uploadImageAndgetUrl(storage, file, Globalconfig.UID, setCoverUrl)
                         document.getElementById("coverSelectText").innerHTML = file.name
-                        document.getElementById("coverSubmit").style.display = "block"
                     }}></input>
                     
                     <div id="coverPicUpload" style={{display: Globalconfig.userData.cover_picture_url === '' ? 'block' : 'none'}}>
@@ -55,8 +64,8 @@ const ProPicAndCover = () => {
                             <br></br>
                         </div>
                         <Button id="coverSubmit" variant='success' style={{display:"none"}} onClick={() => {
-                            update(ref(getDatabase(),'users/' + Globalconfig.userData.UID), {cover_picture_url: coverUrl})
-                            getUserInfo(Globalconfig.UID, getDatabase(), Globalconfig.setUserData)
+                            update(ref(db,'users/' + Globalconfig.userData.UID), {cover_picture_url: coverUrl})
+                            getUserInfo(Globalconfig.UID, db, Globalconfig.setUserData)
                             document.getElementById("coverPicUpload").remove()
                         }}>Upload</Button>
                     </div>
@@ -67,7 +76,6 @@ const ProPicAndCover = () => {
                     {/*Profile Picture*/}
                     <img src={Globalconfig.userData.profile_picture} id="userProfilePicture"></img>
                     <h2 id="username">{Globalconfig.userData.first_name} {Globalconfig.userData.last_name}</h2>
-                    
                     {/* User Bio */}
                     <InputEditFirebase editIcon={<AiOutlineEdit/>} fireBaseObjKey="bio" fireBasePathToUpdate={"users/"+Globalconfig.userData.UID} id="bio" textValue={Globalconfig.userData.bio} inputText={"Click to add bio"} uid={Globalconfig.userData.UID}>"{Globalconfig.userData.bio}"</InputEditFirebase>
                 </Container>
@@ -89,12 +97,17 @@ const UserFeed = () => {
     const Globalconfig = useContext(ConfigContext)
     const [isReady, setIsReady] = useState(false)
 
+    const db = Globalconfig.db
+    const storage = Globalconfig.storage
+
     useEffect(() => {
         // Wait for data to load
         if(Globalconfig.userData !== ""){
             setIsReady(true)
         }
     },[Globalconfig.userData])
+
+    const handleDataChange = () => {getUserInfo(Globalconfig.UID, db, Globalconfig.setUserData)}
 
     if(isReady){
         return (
@@ -115,7 +128,22 @@ const UserFeed = () => {
                         </Col>
                         <Col xs={{span:8, offset:1}} id="userFeedInfo">
                             <div id="status">
-                                <img id="statusProPic" src={Globalconfig.userData.profile_picture}></img><input type="text" placeholder="What's on your mind?" id="statusInput"></input>
+                                <img id="statusProPic" src={Globalconfig.userData.profile_picture}></img><input type="text" placeholder="What's on your mind?" id="statusInput"></input><Button variant='Primary' id="statusSubmit" onClick={()=>{
+                                    {/* Write a status to the database */}
+                                    const postCount = Globalconfig.userData.posts.count
+                                    let post = {
+                                        caption: document.getElementById("statusInput").value,
+                                        image: "",
+                                        location: ""
+                                    }
+
+                                    makeAPost(db, post, postCount, Globalconfig.UID)
+                                    handleDataChange()
+                                    
+                                }}>Post</Button>
+                                <hr></hr>
+                                <Button className="status_types" style={{backgroundColor:"transparent", border:"0px"}}><AiOutlineFileImage style={{color:"#36e622"}}/> Photo</Button>
+                                <Button className="status_types" style={{backgroundColor:"transparent", border:"0px"}}><GoLocation style={{color:"#4DB7D9"}}/> Location</Button>
                             </div>
                         </Col>
                     </Row>
