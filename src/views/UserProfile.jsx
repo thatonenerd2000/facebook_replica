@@ -17,7 +17,7 @@ import {ConfigContext} from '../GlobalContext';
 
 // Components
 import InputEditFirebase from '../components/InputEditFirebase';
-
+import MakeAPost from '../components/MakeAPost';
 
 import {getUserInfo, uploadImageAndgetUrl, writeData, updateData, makeAPost} from '../funcions/firebaseMethods.js'
 
@@ -112,6 +112,7 @@ const UserFeed = () => {
     if(isReady){
         return (
             <>
+            <MakeAPost/>
                 <Container id="userFeedContainer">
                     <Row id="userFeedCol">
                         <Col xs={{span: 3}} id="userFeedUserInfo">
@@ -128,19 +129,9 @@ const UserFeed = () => {
                         </Col>
                         <Col xs={{span:8, offset:1}} id="userFeedInfo">
                             <div id="status">
-                                <img id="statusProPic" src={Globalconfig.userData.profile_picture}></img><input type="text" placeholder="What's on your mind?" id="statusInput"></input><Button variant='Primary' id="statusSubmit" onClick={()=>{
-                                    {/* Write a status to the database */}
-                                    const postCount = Globalconfig.userData.posts.count
-                                    let post = {
-                                        caption: document.getElementById("statusInput").value,
-                                        image: "",
-                                        location: ""
-                                    }
-
-                                    makeAPost(db, post, postCount, Globalconfig.UID)
-                                    handleDataChange()
-                                    
-                                }}>Post</Button>
+                                <img className="statusProPic" src={Globalconfig.userData.profile_picture}></img><input type="text" placeholder="What's on your mind?" id="statusInput" onFocus={()=>{
+                                    Globalconfig.setMakeAPost(true)
+                                }}></input>
                                 <hr></hr>
                                 <Button className="status_types" style={{backgroundColor:"transparent", border:"0px"}}><AiOutlineFileImage style={{color:"#36e622"}}/> Photo</Button>
                                 <Button className="status_types" style={{backgroundColor:"transparent", border:"0px"}}><GoLocation style={{color:"#4DB7D9"}}/> Location</Button>

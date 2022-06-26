@@ -81,6 +81,14 @@ export function updateData(database, Refpath, data){
     update(ref(database, Refpath),data);
 }
 
+/*
+@param database = Firebase database initialization
+@param data = data for the post
+@param count = post count
+@param uid = User ID
+
+Writes a post in the database
+*/
 export function makeAPost(database, data, count, uid){
     const PostCount = count
     if(data !== ""){

@@ -26,6 +26,7 @@ const GlobalContext = (props) => {
     const [userDataRet, setUserData] = useState('')
     const [database,setDatabase] = useState(getDatabase())
     const [StorageFirebase, setStorageFirebase] = useState(getStorage())
+    const [makeAPost, setMakeAPost] = useState(false)
 
     return(
         <ConfigContext.Provider value = {{
@@ -37,7 +38,9 @@ const GlobalContext = (props) => {
             userData:userDataRet,
             setUserData,
             db:database,
-            storage:StorageFirebase
+            storage:StorageFirebase,
+            postBox:makeAPost,
+            setMakeAPost
         }}>
             {props.children}
         </ConfigContext.Provider>
