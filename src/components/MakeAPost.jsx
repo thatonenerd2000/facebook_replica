@@ -25,6 +25,11 @@ const MakeAPost = (props) => {
         if(Globalconfig.userData !== ""){
             setIsReady(true)
         }
+
+        if(Globalconfig.postBox === true){
+                window.scrollTo(0, 0);
+                document.getElementsByTagName('html')[0].style.overflow = "hidden"
+        }
     },[Globalconfig.userData,Globalconfig.postBox])
 
     if(isReady && Globalconfig.postBox){
@@ -33,6 +38,7 @@ const MakeAPost = (props) => {
                 <div id="postOverlay" onClick={()=>{
                     document.getElementById("postOverlay").style.display = "none"
                     Globalconfig.setMakeAPost(false)
+                    document.getElementsByTagName('html')[0].style.overflow = "scroll"
                 }}></div>
                 <div id="makeAPost">
                     <img className="statusProPic" src={Globalconfig.userData.profile_picture}></img> <h5 style={{color:"white", display:"inline"}}>{Globalconfig.userData.first_name} {Globalconfig.userData.last_name}</h5>
@@ -51,12 +57,14 @@ const MakeAPost = (props) => {
                         let post = {
                             caption: document.getElementById("postInput").value,
                             image: "",
-                            location: ""
+                            location: "",
+                            date: new Date().toUTCString(),
                         }
                         if(document.getElementById("postInput").value !== ""){
                             makeAPost(Globalconfig.db, post, postCount, Globalconfig.UID)
                             getUserInfo(Globalconfig.UID, Globalconfig.db, Globalconfig.setUserData)
                             document.getElementById("postInput").value = ""
+                            document.getElementsByTagName('html')[0].style.overflow = "scroll"
                         }
                         Globalconfig.setMakeAPost(false)
                     }}>Post</Button>
