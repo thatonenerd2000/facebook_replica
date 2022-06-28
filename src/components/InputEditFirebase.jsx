@@ -16,7 +16,6 @@ const InputEditFirebase = (props) => {
     const Globalconfig = useContext(ConfigContext)
 
     useEffect(() => {
-        console.log(props.textValue)
     },[props.textValue])
 
     if(props.textValue === ""){

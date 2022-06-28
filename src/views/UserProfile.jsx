@@ -51,7 +51,7 @@ const ProPicAndCover = () => {
                     {/* Code block to display if the user don't have a cover photo */}
                     <input type="file" id="coverPhoto" hidden onChange={() => {
                         const file = document.getElementById("coverPhoto").files[0]
-                        uploadImageAndgetUrl(storage, file, Globalconfig.UID, setCoverUrl)
+                        uploadImageAndgetUrl(storage, file, Globalconfig.UID, 'users/' + Globalconfig.UID + '/cover_picture/', file.name, setCoverUrl)
                         document.getElementById("coverSelectText").innerHTML = file.name
                     }}></input>
                     
@@ -119,7 +119,7 @@ const UserFeed = () => {
             <MakeAPost/>
                 <Container id="userFeedContainer">
                     <Row id="userFeedCol">
-                        <Col xs={{span: 3}} id="userFeedUserInfo">
+                        <Col style={{height:"fit-content"}} xs={{span: 3}} id="userFeedUserInfo">
                             <h4>About You</h4>
                             <hr></hr>
                             <p>Birthday: {new Date(Globalconfig.userData.DOB).toUTCString().slice(4,16)}</p>
