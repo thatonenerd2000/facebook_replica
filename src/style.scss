@@ -231,8 +231,9 @@ body, html {
 }
 
 #userProfileContainer{
-    height:100vh;
+    height:fit-content;
     background-color: #18191A;
+    padding: 10px;
 }
 
 #userProfilePicture {
@@ -437,7 +438,7 @@ body, html {
 
 // Make a post
 #makeAPost{
-    height:40vh;
+    height:inherit;
     width:40vw;
     background-color: #242526;
     position: absolute;
@@ -467,10 +468,46 @@ body, html {
     position:absolute;
     top:0;
     left:0;
-    height:100vh;
+    height:100%;
     width:100vw;
     z-index:19;
     background:linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.7));
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+// User Posts
+#userPosts{
+    height: fit-content;
+    border-radius: 10px;
+}
+
+#userPostsLabel{
+    height: fit-content;
+    background-color:#242526;
+    padding:20px;
+    border-radius: 10px;
+}
+
+#post{
+    width: 100%;
+    height: fit-content;
+    background-color:#242526;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top:10px;
+}
+
+#postImage{
+    width: 100%;
+    text-align: center;
+    border:1px solid #9A9B9B;
+    border-radius: 10px;
+    padding: 70px 0;
+    cursor: pointer;
+}
+
+#postImagePreview{
+    width:100%;
+    max-height: 80vh;
 }

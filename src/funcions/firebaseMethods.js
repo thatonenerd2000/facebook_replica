@@ -49,11 +49,11 @@ export function getUserInfo(uid, database, stateSetter){
 
 Uploads an image to firebase storage and sets the url of the image to stateSetter
 */
-export function uploadImageAndgetUrl(database, Imgfile, uid, stateSetter){
+export function uploadImageAndgetUrl(database, Imgfile, uid, path, fileName, stateSetter){
     const file = Imgfile;
-    const storageRef = sRef(database,'users/' + uid + '/cover_picture/' + file.name);
+    const storageRef = sRef(database, path + fileName);
     uploadBytes(storageRef,Imgfile).then(snap => {
-        getDownloadURL(sRef(database, 'users/' + uid + '/cover_picture/' + file.name)).then(url => {
+        getDownloadURL(sRef(database, path + fileName)).then(url => {
             stateSetter(url)
         })
     })

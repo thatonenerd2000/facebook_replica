@@ -18,6 +18,7 @@ import {ConfigContext} from '../GlobalContext';
 // Components
 import InputEditFirebase from '../components/InputEditFirebase';
 import MakeAPost from '../components/MakeAPost';
+import Post from '../components/Post';
 
 import {getUserInfo, uploadImageAndgetUrl, writeData, updateData, makeAPost} from '../funcions/firebaseMethods.js'
 
@@ -41,8 +42,7 @@ const ProPicAndCover = () => {
         }
     },[Globalconfig.userData,coverUrl])
 
-    const handleDataChange = () => {getUserInfo(Globalconfig.UID, db, Globalconfig.setUserData)}
-    
+    const handleDataChange = () => {getUserInfo(Globalconfig.UID, db, Globalconfig.setUserData)}    
 
     if(isReady){
         return(
@@ -51,7 +51,7 @@ const ProPicAndCover = () => {
                     {/* Code block to display if the user don't have a cover photo */}
                     <input type="file" id="coverPhoto" hidden onChange={() => {
                         const file = document.getElementById("coverPhoto").files[0]
-                        uploadImageAndgetUrl(storage, file, Globalconfig.UID, setCoverUrl)
+                        uploadImageAndgetUrl(storage, file, Globalconfig.UID, 'users/' + Globalconfig.UID + '/cover_picture/', file.name, setCoverUrl)
                         document.getElementById("coverSelectText").innerHTML = file.name
                     }}></input>
                     
@@ -100,14 +100,18 @@ const UserFeed = () => {
     const db = Globalconfig.db
     const storage = Globalconfig.storage
 
+    const posts = Globalconfig.userData.posts
+    const [postKeys, setPostKeys] = useState([])
+
     useEffect(() => {
         // Wait for data to load
         if(Globalconfig.userData !== ""){
             setIsReady(true)
+            if(posts !== ""){
+                setPostKeys(Object.keys(posts.post_array))
+            }
         }
     },[Globalconfig.userData])
-
-    const handleDataChange = () => {getUserInfo(Globalconfig.UID, db, Globalconfig.setUserData)}
 
     if(isReady){
         return (
@@ -115,7 +119,7 @@ const UserFeed = () => {
             <MakeAPost/>
                 <Container id="userFeedContainer">
                     <Row id="userFeedCol">
-                        <Col xs={{span: 3}} id="userFeedUserInfo">
+                        <Col style={{height:"fit-content"}} xs={{span: 3}} id="userFeedUserInfo">
                             <h4>About You</h4>
                             <hr></hr>
                             <p>Birthday: {new Date(Globalconfig.userData.DOB).toUTCString().slice(4,16)}</p>
@@ -135,6 +139,19 @@ const UserFeed = () => {
                                 <hr></hr>
                                 <Button className="status_types" style={{backgroundColor:"transparent", border:"0px"}}><AiOutlineFileImage style={{color:"#36e622"}}/> Photo</Button>
                                 <Button className="status_types" style={{backgroundColor:"transparent", border:"0px"}}><GoLocation style={{color:"#4DB7D9"}}/> Location</Button>
+                            </div>
+                                <br></br>
+                            {/*User posts*/}
+                            <div id="userPostsLabel">
+                                <h5>Posts</h5>
+                            </div>
+                            <br></br>
+                            <div id="userPosts">
+                                {postKeys.map((key) => {
+                                    return(
+                                        <Post postKey={key} key={key}/>
+                                    )
+                                })}
                             </div>
                         </Col>
                     </Row>
